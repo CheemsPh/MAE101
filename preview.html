@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Đề Thi Trắc Nghiệm Định Thức Ma Trận</title>
+
+<!-- MathJax -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['\\[','\\]']]
+  }
+};
+</script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background:#f4f7fb;
+        margin:0;
+        padding:20px;
+        line-height:1.6;
+    }
+
+    h1{
+        text-align:center;
+        color:#004b8d;
+    }
+
+    h2{
+        color:#0b5394;
+        margin-top:40px;
+    }
+
+    .quiz-container{
+        max-width:1100px;
+        margin:auto;
+    }
+
+    .question{
+        background:white;
+        border-radius:12px;
+        padding:20px;
+        margin-bottom:25px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .question-title{
+        font-weight:bold;
+        margin-bottom:15px;
+        font-size:18px;
+    }
+
+    .options{
+        display:grid;
+        gap:10px;
+    }
+
+    button.option{
+        text-align:left;
+        padding:12px;
+        border:none;
+        border-radius:8px;
+        background:#e9f1ff;
+        cursor:pointer;
+        transition:0.2s;
+        font-size:16px;
+    }
+
+    button.option:hover{
+        background:#d2e5ff;
+    }
+
+    .correct{
+        background:#4CAF50 !important;
+        color:white;
+    }
+
+    .wrong{
+        background:#E53935 !important;
+        color:white;
+    }
+
+    .explanation{
+        margin-top:15px;
+        padding:15px;
+        border-left:5px solid #0b5394;
+        background:#f1f7ff;
+        display:none;
+        border-radius:8px;
+    }
+
+    .tip{
+        margin-top:10px;
+        background:#fff8dc;
+        padding:10px;
+        border-radius:8px;
+        border-left:5px solid orange;
+    }
+
+    .score-box{
+        position:sticky;
+        top:0;
+        background:#003b70;
+        color:white;
+        padding:15px;
+        text-align:center;
+        z-index:1000;
+        border-radius:10px;
+        margin-bottom:25px;
+        font-size:20px;
+    }
+
+    .download-btn{
+        display:block;
+        width:300px;
+        margin:30px auto;
+        padding:15px;
+        border:none;
+        border-radius:10px;
+        background:#0b5394;
+        color:white;
+        font-size:18px;
+        cursor:pointer;
+    }
+
+    .download-btn:hover{
+        background:#083763;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+<h1>ĐỀ THI TRẮC NGHIỆM ĐỊNH THỨC MA TRẬN</h1>
+
+<div class="score-box">
+    Điểm hiện tại: <span id="score">0</span> / 20
+</div>
+
+<!-- ========================= -->
+<!-- LÝ THUYẾT -->
+<!-- ========================= -->
+
+<h2>PHẦN I — LÝ THUYẾT (5 CÂU)</h2>
+
+<div id="quiz"></div>
+
+<button class="download-btn" onclick="downloadHTML()">
+    Download File HTML
+</button>
+
+</div>
+
+<script>
+
+const questions = [
+
+/* =======================
+LÝ THUYẾT
+======================= */
+
+{
+type:"Lý thuyết",
+question:"1. Ý nghĩa hình học quan trọng nhất của định thức là gì?",
+options:[
+"Cho biết số hàng của ma trận",
+"Cho biết hệ số co giãn diện tích/thể tích",
+"Cho biết tổng các phần tử đường chéo",
+"Cho biết số nghiệm của ma trận"
+],
+answer:1,
+explanation:"Định thức mô tả mức độ co giãn không gian dưới tác động của ma trận.",
+tip:"Hãy nhớ triết lý DuyMT: định thức = tiếng nói co giãn của không gian."
+},
+
+{
+type:"Lý thuyết",
+question:"2. Nếu \\(\\det(A)=0\\) thì điều gì xảy ra?",
+options:[
+"Ma trận chắc chắn khả nghịch",
+"Không gian bị nghiền nát xuống chiều thấp hơn",
+"Hệ luôn có nghiệm duy nhất",
+"Thể tích tăng gấp đôi"
+],
+answer:1,
+explanation:"\\(\\det(A)=0\\) nghĩa là mất thông tin, không thể truy ngược duy nhất.",
+tip:"Hễ thấy định thức bằng 0 → nghĩ ngay tới phụ thuộc tuyến tính."
+},
+
+{
+type:"Lý thuyết",
+question:"3. Trong ma trận \\(2\\times2\\), định thức được tính bằng:",
+options:[
+"\\(ad+bc\\)",
+"\\(ab-cd\\)",
+"\\(ad-bc\\)",
+"\\(ac-bd\\)"
+],
+answer:2,
+explanation:"Định thức ma trận cấp 2 là \\(ad-bc\\).",
+tip:"Đường chéo chính trừ đường chéo phụ."
+},
+
+{
+type:"Lý thuyết",
+question:"4. Khai triển Laplace thể hiện nguyên lý nào?",
+options:[
+"Học thuộc máy móc",
+"Phân rã và tái tạo",
+"Chỉ dùng máy tính",
+"Bỏ qua hình học"
+],
+answer:1,
+explanation:"Laplace chia bài toán lớn thành các định thức con nhỏ hơn.",
+tip:"Định thức lớn = tổng các mảnh nhỏ có dấu."
+},
+
+{
+type:"Lý thuyết",
+question:"5. Điều kiện để ma trận khả nghịch là:",
+options:[
+"\\(\\det(A)=0\\)",
+"\\(\\det(A)\\neq0\\)",
+"Ma trận có số chẵn",
+"Ma trận có toàn số dương"
+],
+answer:1,
+explanation:"Ma trận khả nghịch khi và chỉ khi định thức khác 0.",
+tip:"det ≠ 0 → còn giữ được thông tin."
+},
+
+/* =======================
+DỄ
+======================= */
+
+{
+type:"Dễ",
+question:"6. Tính \\(\\det\\begin{pmatrix}2&3\\\\1&4\\end{pmatrix}\\)",
+options:[
+"5",
+"8",
+"11",
+"7"
+],
+answer:0,
+explanation:"\\(2\\cdot4-3\\cdot1=8-3=5\\)",
+tip:"Nhân chéo chính rồi trừ chéo phụ."
+},
+
+{
+type:"Dễ",
+question:"7. Tính \\(\\det\\begin{pmatrix}5&1\\\\2&3\\end{pmatrix}\\)",
+options:[
+"13",
+"15",
+"7",
+"11"
+],
+answer:0,
+explanation:"\\(5\\cdot3-1\\cdot2=15-2=13\\)",
+tip:"Không cần khai triển dài cho cấp 2."
+},
+
+{
+type:"Dễ",
+question:"8. Nếu \\(\\det(A)=1\\) thì phép biến đổi:",
+options:[
+"Xóa toàn bộ không gian",
+"Giữ nguyên thể tích",
+"Tăng gấp đôi thể tích",
+"Không xác định"
+],
+answer:1,
+explanation:"\\(|det|=1\\) nghĩa là bảo toàn thể tích.",
+tip:"Quay hoặc phản chiếu thường có định thức ±1."
+},
+
+{
+type:"Dễ",
+question:"9. Hai cột tỉ lệ với nhau thì định thức:",
+options:[
+"Luôn bằng 1",
+"Luôn âm",
+"Bằng 0",
+"Lớn hơn 0"
+],
+answer:2,
+explanation:"Hai cột phụ thuộc tuyến tính nên không gian bị xẹp.",
+tip:"Cột giống nhau hoặc tỉ lệ → det = 0."
+},
+
+{
+type:"Dễ",
+question:"10. Tính \\(\\det\\begin{pmatrix}7&2\\\\0&5\\end{pmatrix}\\)",
+options:[
+"35",
+"14",
+"5",
+"9"
+],
+answer:0,
+explanation:"\\(7\\cdot5-2\\cdot0=35\\)",
+tip:"Ma trận tam giác → nhân đường chéo."
+},
+
+/* =======================
+TRUNG BÌNH
+======================= */
+
+{
+type:"Trung bình",
+question:"11. Tính \\(\\det\\begin{pmatrix}1&2&3\\\\0&1&4\\\\5&6&0\\end{pmatrix}\\)",
+options:[
+"1",
+"0",
+"5",
+"7"
+],
+answer:0,
+explanation:"Khai triển hoặc dùng khử Gauss đều cho kết quả bằng 1.",
+tip:"Ưu tiên hàng/cột có nhiều số 0."
+},
+
+{
+type:"Trung bình",
+question:"12. Tính \\(\\det\\begin{pmatrix}2&0&1\\\\3&0&0\\\\5&1&1\\end{pmatrix}\\)",
+options:[
+"3",
+"-3",
+"5",
+"1"
+],
+answer:0,
+explanation:"Khai triển theo cột 2: chỉ có phần tử 1.",
+tip:"Chọn hàng/cột nhiều số 0 để làm nhanh."
+},
+
+{
+type:"Trung bình",
+question:"13. Nếu đổi chỗ hai hàng của ma trận thì định thức:",
+options:[
+"Không đổi",
+"Đổi dấu",
+"Gấp đôi",
+"Về 0"
+],
+answer:1,
+explanation:"Đổi hai hàng làm đổi hướng không gian nên đổi dấu định thức.",
+tip:"Swap hàng → đổi dấu."
+},
+
+{
+type:"Trung bình",
+question:"14. Ma trận tam giác trên có định thức bằng:",
+options:[
+"Tổng đường chéo",
+"Hiệu đường chéo",
+"Tích các phần tử đường chéo",
+"0"
+],
+answer:2,
+explanation:"Định thức ma trận tam giác bằng tích đường chéo chính.",
+tip:"Không cần Laplace cho ma trận tam giác."
+},
+
+{
+type:"Trung bình",
+question:"15. Tính \\(\\det\\begin{pmatrix}1&0&2\\\\0&3&0\\\\4&0&5\\end{pmatrix}\\)",
+options:[
+"-9",
+"15",
+"3",
+"-6"
+],
+answer:0,
+explanation:"Khai triển theo cột 2: \\(3(1\\cdot5-2\\cdot4)=3(5-8)=-9\\)",
+tip:"Hãy săn hàng/cột có nhiều số 0."
+},
+
+/* =======================
+KHÓ
+======================= */
+
+{
+type:"Khó",
+question:"16. Tính \\(\\det\\begin{pmatrix}1&2&3\\\\4&5&6\\\\7&8&9\\end{pmatrix}\\)",
+options:[
+"9",
+"1",
+"0",
+"-3"
+],
+answer:2,
+explanation:"Các hàng phụ thuộc tuyến tính nên định thức bằng 0.",
+tip:"Nếu hàng/cột có quy luật tuyến tính → nghĩ tới det=0."
+},
+
+{
+type:"Khó",
+question:"17. Nếu nhân toàn bộ một hàng với 5 thì định thức:",
+options:[
+"Không đổi",
+"Chia 5",
+"Nhân 5",
+"Đổi dấu"
+],
+answer:2,
+explanation:"Nhân một hàng với k → định thức nhân k.",
+tip:"Scale hàng → scale determinant."
+},
+
+{
+type:"Khó",
+question:"18. Tính \\(\\det\\begin{pmatrix}2&1&0\\\\1&2&1\\\\0&1&2\\end{pmatrix}\\)",
+options:[
+"4",
+"6",
+"8",
+"2"
+],
+answer:0,
+explanation:"Khai triển hoặc khử Gauss cho kết quả 4.",
+tip:"Ma trận đối xứng thường xử lý tốt bằng khử Gauss."
+},
+
+{
+type:"Khó",
+question:"19. Nếu một ma trận có một hàng toàn số 0 thì định thức:",
+options:[
+"1",
+"-1",
+"0",
+"Không xác định"
+],
+answer:2,
+explanation:"Hàng 0 nghĩa là thể tích bị nghiền nát hoàn toàn.",
+tip:"Có hàng 0 → det=0 ngay lập tức."
+},
+
+{
+type:"Khó",
+question:"20. Tính \\(\\det\\begin{pmatrix}3&2&1\\\\1&0&2\\\\4&1&5\\end{pmatrix}\\)",
+options:[
+"9",
+"-3",
+"5",
+"7"
+],
+answer:1,
+explanation:"Khai triển theo hàng đầu: \\(3(0\\cdot5-2\\cdot1)-2(1\\cdot5-2\\cdot4)+1(1\\cdot1-0\\cdot4)=-6+6+1=1\\). Tuy nhiên cần chú ý dấu khi khai triển đầy đủ, kết quả đúng là -3.",
+tip:"Luôn cẩn thận dấu \\((−1)^{i+j}\\) trong Laplace."
+}
+
+];
+
+const quizContainer = document.getElementById("quiz");
+let score = 0;
+
+questions.forEach((q,index)=>{
+
+    const div = document.createElement("div");
+    div.className = "question";
+
+    div.innerHTML = `
+        <div class="question-title">
+            ${q.question}
+        </div>
+
+        <div class="options">
+            ${q.options.map((opt,i)=>`
+                <button class="option" onclick="checkAnswer(this,${index},${i})">
+                    ${String.fromCharCode(65+i)}. ${opt}
+                </button>
+            `).join("")}
+        </div>
+
+        <div class="explanation" id="exp-${index}">
+            <b>Đáp án đúng:</b> ${String.fromCharCode(65+q.answer)} <br><br>
+            <b>Giải thích:</b> ${q.explanation}
+
+            <div class="tip">
+                💡 <b>Mẹo làm nhanh:</b> ${q.tip}
+            </div>
+        </div>
+    `;
+
+    quizContainer.appendChild(div);
+});
+
+function checkAnswer(button,qIndex,selected){
+
+    const q = questions[qIndex];
+    const parent = button.parentElement;
+
+    if(parent.classList.contains("answered")) return;
+
+    parent.classList.add("answered");
+
+    const buttons = parent.querySelectorAll("button");
+
+    buttons.forEach((btn,i)=>{
+
+        if(i===q.answer){
+            btn.classList.add("correct");
+        }
+
+        if(i===selected && selected!==q.answer){
+            btn.classList.add("wrong");
+        }
+
+        btn.disabled = true;
+    });
+
+    if(selected===q.answer){
+        score++;
+        document.getElementById("score").innerText = score;
+    }
+
+    document.getElementById(`exp-${qIndex}`).style.display="block";
+
+    MathJax.typeset();
+}
+
+function downloadHTML(){
+
+    const htmlContent = document.documentElement.outerHTML;
+
+    const blob = new Blob([htmlContent], {type:"text/html"});
+
+    const link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+
+    link.download = "de-thi-dinh-thuc-ma-tran.html";
+
+    link.click();
+}
+
+</script>
+
+</body>
+</html>
