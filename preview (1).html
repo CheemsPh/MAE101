@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đề Thi Trắc Nghiệm - Định Lý Trung Bình Tích Phân</title>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    margin:0;
+    padding:20px;
+    line-height:1.6;
+}
+.container{
+    max-width:1100px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 0 12px rgba(0,0,0,0.15);
+}
+h1,h2{
+    text-align:center;
+}
+.question{
+    border:1px solid #ddd;
+    padding:18px;
+    border-radius:10px;
+    margin-bottom:25px;
+}
+.option{
+    display:block;
+    margin:8px 0;
+    padding:10px;
+    border-radius:8px;
+    background:#f1f1f1;
+    cursor:pointer;
+    transition:0.3s;
+}
+.option:hover{
+    background:#ddd;
+}
+.correct{
+    background:#7CFC8A !important;
+}
+.wrong{
+    background:#ff7b7b !important;
+}
+.answer-box{
+    margin-top:12px;
+    padding:12px;
+    border-left:5px solid #3498db;
+    background:#eef7ff;
+    display:none;
+}
+.easy{
+    border-left:8px solid #2ecc71;
+}
+.medium{
+    border-left:8px solid #f39c12;
+}
+.hard{
+    border-left:8px solid #e74c3c;
+}
+.theory{
+    border-left:8px solid #9b59b6;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>ĐỀ THI TRẮC NGHIỆM TƯƠNG TÁC</h1>
+<h2>Định Lý Trung Bình Tích Phân</h2>
+
+<div id="quiz"></div>
+
+</div>
+
+<script>
+const questions = [
+
+{
+type:"theory",
+question:"1. Ý nghĩa hình học của giá trị trung bình tích phân là gì?",
+options:[
+"Độ dốc trung bình của đồ thị",
+"Chiều cao trung bình của đồ thị",
+"Chu vi trung bình của đồ thị",
+"Đạo hàm trung bình của đồ thị"
+],
+correct:1,
+explanation:"Giá trị trung bình tích phân biểu diễn chiều cao trung bình của đồ thị trên đoạn xét.",
+tip:"Hãy nhớ công thức: diện tích chia chiều dài = chiều cao trung bình."
+},
+
+{
+type:"theory",
+question:"2. Công thức giá trị trung bình của hàm số liên tục trên [a,b] là:",
+options:[
+"\\(\\int_a^b f(x)dx\\)",
+"\\(\\frac{1}{a-b}\\int_a^b f(x)dx\\)",
+"\\(\\frac{1}{b-a}\\int_a^b f(x)dx\\)",
+"\\(f(a)+f(b)\\)"
+],
+correct:2,
+explanation:"Định lý trung bình tích phân có công thức chuẩn là: \\(f_{tb}=\\frac{1}{b-a}\\int_a^b f(x)dx\\).",
+tip:"Luôn chú ý mẫu số phải là b-a."
+},
+
+{
+type:"theory",
+question:"3. Trong công thức trung bình tích phân, \\(\\int_a^b f(x)dx\\) biểu diễn điều gì?",
+options:[
+"Đạo hàm của hàm số",
+"Diện tích dưới đường cong",
+"Chiều dài đoạn",
+"Độ cong của đồ thị"
+],
+correct:1,
+explanation:"Tích phân xác định biểu diễn diện tích hình phẳng giới hạn bởi đồ thị và trục hoành.",
+tip:"Tích phân thường gắn với diện tích."
+},
+
+{
+type:"theory",
+question:"4. Điều kiện để áp dụng định lý trung bình tích phân là:",
+options:[
+"Hàm số liên tục trên [a,b]",
+"Hàm số có đạo hàm",
+"Hàm số tuần hoàn",
+"Hàm số tăng"
+],
+correct:0,
+explanation:"Định lý yêu cầu hàm số liên tục trên đoạn [a,b].",
+tip:"Nhìn thấy 'trung bình tích phân' thì nhớ ngay tính liên tục."
+},
+
+{
+type:"theory",
+question:"5. Giá trị trung bình tích phân giúp thay đường cong phức tạp bằng:",
+options:[
+"Hình tam giác tương đương",
+"Hình tròn tương đương",
+"Hình chữ nhật cùng diện tích",
+"Hình thang cân"
+],
+correct:2,
+explanation:"Chiều cao trung bình chính là chiều cao của hình chữ nhật có cùng diện tích với miền dưới đồ thị.",
+tip:"Đường cong → quy đổi thành hình chữ nhật."
+},
+
+{
+type:"easy",
+question:"6. Tính giá trị trung bình của \\(f(x)=x\\) trên đoạn [0,2].",
+options:[
+"1",
+"2",
+"3",
+"4"
+],
+correct:0,
+explanation:"\\(f_{tb}=\\frac{1}{2-0}\\int_0^2 xdx = \\frac{1}{2}\\cdot 2 =1\\).",
+tip:"Hàm bậc nhất trên đoạn đối xứng thường cho trung bình là trung điểm."
+},
+
+{
+type:"easy",
+question:"7. Tính \\(f_{tb}\\) của \\(f(x)=2\\) trên [1,5].",
+options:[
+"0",
+"1",
+"2",
+"5"
+],
+correct:2,
+explanation:"Hàm hằng thì giá trị trung bình chính là chính nó.",
+tip:"Hàm số không đổi → trung bình không đổi."
+},
+
+{
+type:"easy",
+question:"8. Tính giá trị trung bình của \\(f(x)=x^2\\) trên [0,1].",
+options:[
+"\\(\\frac{1}{2}\\)",
+"\\(\\frac{1}{3}\\)",
+"1",
+"2"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\int_0^1 x^2dx = \\frac{1}{3}\\).",
+tip:"Nhớ công thức nguyên hàm: \\(x^n → \\frac{x^{n+1}}{n+1}\\)."
+},
+
+{
+type:"easy",
+question:"9. Tính giá trị trung bình của \\(f(x)=3x\\) trên [0,2].",
+options:[
+"2",
+"3",
+"4",
+"6"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_0^2 3xdx =3\\).",
+tip:"Có thể lấy hệ số 3 ra ngoài tích phân."
+},
+
+{
+type:"easy",
+question:"10. Tính giá trị trung bình của \\(f(x)=x+1\\) trên [0,2].",
+options:[
+"1",
+"2",
+"3",
+"4"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_0^2(x+1)dx =2\\).",
+tip:"Tách tích phân thành hai phần nhỏ."
+},
+
+{
+type:"medium",
+question:"11. Tính giá trị trung bình của \\(f(x)=x^2+1\\) trên [0,2].",
+options:[
+"\\(\\frac{7}{3}\\)",
+"\\(\\frac{5}{3}\\)",
+"3",
+"4"
+],
+correct:0,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_0^2(x^2+1)dx = \\frac{7}{3}\\).",
+tip:"Luôn tính tích phân trước rồi mới chia cho b-a."
+},
+
+{
+type:"medium",
+question:"12. Giá trị trung bình của \\(f(x)=\\sin x\\) trên [0,π] là:",
+options:[
+"0",
+"\\(\\frac{2}{\\pi}\\)",
+"1",
+"2"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{\\pi}\\int_0^{\\pi}\\sin xdx =\\frac{2}{\\pi}\\).",
+tip:"\\(\\int_0^{\\pi}\\sin xdx =2\\) là kết quả rất quen thuộc."
+},
+
+{
+type:"medium",
+question:"13. Tính giá trị trung bình của \\(f(x)=x^3\\) trên [0,2].",
+options:[
+"2",
+"4",
+"6",
+"8"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_0^2 x^3dx =4\\).",
+tip:"Lũy thừa cao → cẩn thận khi thay cận."
+},
+
+{
+type:"medium",
+question:"14. Tính giá trị trung bình của \\(f(x)=2x+5\\) trên [1,3].",
+options:[
+"7",
+"8",
+"9",
+"10"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_1^3(2x+5)dx =8\\).",
+tip:"Với hàm bậc nhất, trung bình bằng trung bình cộng hai đầu mút."
+},
+
+{
+type:"medium",
+question:"15. Giá trị trung bình của \\(f(x)=\\cos x\\) trên [0,π/2] là:",
+options:[
+"0",
+"\\(\\frac{1}{2}\\)",
+"\\(\\frac{2}{\\pi}\\)",
+"1"
+],
+correct:2,
+explanation:"\\(f_{tb}=\\frac{2}{\\pi}\\int_0^{\\pi/2}\\cos xdx =\\frac{2}{\\pi}\\).",
+tip:"\\(\\int cosx dx = sinx\\)."
+},
+
+{
+type:"hard",
+question:"16. Tính giá trị trung bình của \\(f(x)=x^2-2x\\) trên [0,3].",
+options:[
+"0",
+"1",
+"2",
+"3"
+],
+correct:0,
+explanation:"\\(f_{tb}=\\frac{1}{3}\\int_0^3(x^2-2x)dx =0\\).",
+tip:"Có thể triệt tiêu giữa phần dương và âm."
+},
+
+{
+type:"hard",
+question:"17. Tính giá trị trung bình của \\(f(x)=e^x\\) trên [0,1].",
+options:[
+"e",
+"e-1",
+"\\(\\frac{e-1}{2}\\)",
+"1"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\int_0^1 e^x dx = e-1\\).",
+tip:"Nguyên hàm của \\(e^x\\) vẫn là chính nó."
+},
+
+{
+type:"hard",
+question:"18. Tính giá trị trung bình của \\(f(x)=\\ln x\\) trên [1,e].",
+options:[
+"0",
+"1",
+"\\(\\frac{1}{e-1}\\)",
+"\\(\\frac{1}{2}\\)"
+],
+correct:2,
+explanation:"\\(f_{tb}=\\frac{1}{e-1}\\int_1^e\\ln xdx =\\frac{1}{e-1}\\).",
+tip:"Nhớ công thức: \\(\\int lnx dx = xlnx-x\\)."
+},
+
+{
+type:"hard",
+question:"19. Tính giá trị trung bình của \\(f(x)=x\\sin x\\) trên [0,π].",
+options:[
+"1",
+"\\(\\frac{2}{\\pi}\\)",
+"π",
+"2"
+],
+correct:3,
+explanation:"\\(f_{tb}=\\frac{1}{\\pi}\\int_0^{\\pi}x\\sin xdx =2\\).",
+tip:"Dùng tích phân từng phần."
+},
+
+{
+type:"hard",
+question:"20. Nếu \\(f_{tb}=5\\) trên đoạn [1,4], thì tích phân \\(\\int_1^4 f(x)dx\\) bằng:",
+options:[
+"5",
+"10",
+"15",
+"20"
+],
+correct:2,
+explanation:"\\(\\int_1^4 f(x)dx = f_{tb}(b-a)=5(4-1)=15\\).",
+tip:"Có thể biến đổi ngược công thức trung bình tích phân."
+}
+
+];
+
+const quiz = document.getElementById("quiz");
+
+questions.forEach((q,index)=>{
+    const div=document.createElement("div");
+    div.className=`question ${q.type}`;
+
+    let level = "";
+    if(q.type==="easy") level="🟢 Dễ";
+    if(q.type==="medium") level="🟠 Trung Bình";
+    if(q.type==="hard") level="🔴 Khó";
+    if(q.type==="theory") level="📘 Lý Thuyết";
+
+    div.innerHTML=`<h3>${level}</h3><p>${q.question}</p>`;
+
+    q.options.forEach((opt,i)=>{
+        const btn=document.createElement("button");
+        btn.className="option";
+        btn.innerHTML=opt;
+
+        btn.onclick=()=>{
+            const buttons=div.querySelectorAll(".option");
+            buttons.forEach(b=>b.disabled=true);
+
+            if(i===q.correct){
+                btn.classList.add("correct");
+            }else{
+                btn.classList.add("wrong");
+                buttons[q.correct].classList.add("correct");
+            }
+
+            const ans=div.querySelector(".answer-box");
+            ans.style.display="block";
+        };
+
+        div.appendChild(btn);
+    });
+
+    const ans=document.createElement("div");
+    ans.className="answer-box";
+    ans.innerHTML=`
+    <strong>Đáp án đúng:</strong> ${q.options[q.correct]}<br><br>
+    <strong>Giải thích:</strong> ${q.explanation}<br><br>
+    <strong>Mẹo làm nhanh:</strong> ${q.tip}
+    `;
+
+    div.appendChild(ans);
+    quiz.appendChild(div);
+});
+
+</script>
+
+</body>
+</html>
