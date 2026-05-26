@@ -1,621 +1,424 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Trắc nghiệm: Đạo hàm hàm ẩn - Bản chất mối quan hệ lẫn lộn</title>
-    <!-- Cấu hình MathJax để hiển thị công thức chuẩn -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true
-            },
-            options: {
-                ignoreHtmlClass: 'no-mathjax',
-                processHtmlClass: 'math'
-            },
-            startup: {
-                ready: () => {
-                    MathJax.startup.defaultReady();
-                    MathJax.startup.promise.then(() => {
-                        console.log("MathJax đã sẵn sàng");
-                    });
-                }
-            }
-        };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đề Thi Trắc Nghiệm - Định Lý Trung Bình Tích Phân</title>
 
-        body {
-            background: #f0f7ff;
-            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-            padding: 30px 20px;
-            color: #1e2a3e;
-        }
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            padding: 24px 28px;
-        }
-
-        h1 {
-            font-size: 1.9rem;
-            background: linear-gradient(135deg, #005aa7, #003366);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 8px;
-            display: inline-block;
-        }
-
-        .sub {
-            color: #2c5282;
-            border-left: 4px solid #2b6cb0;
-            padding-left: 16px;
-            margin: 10px 0 20px 0;
-            font-style: italic;
-        }
-
-        .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
-            background: #eef2f9;
-            padding: 12px 20px;
-            border-radius: 48px;
-        }
-
-        .stats {
-            font-weight: bold;
-            background: #1e4a76;
-            padding: 6px 16px;
-            border-radius: 40px;
-            color: white;
-        }
-
-        .btn-download {
-            background: #2c7a4d;
-            border: none;
-            padding: 8px 24px;
-            border-radius: 40px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .btn-download:hover {
-            background: #1f5e3a;
-            transform: scale(1.02);
-        }
-
-        .question-card {
-            background: #ffffff;
-            border-radius: 28px;
-            margin-bottom: 32px;
-            padding: 20px 26px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2edff;
-            transition: all 0.1s;
-        }
-
-        .question-header {
-            display: flex;
-            gap: 16px;
-            align-items: baseline;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
-        }
-
-        .q-num {
-            background: #005aa7;
-            color: white;
-            font-weight: bold;
-            border-radius: 40px;
-            padding: 4px 14px;
-            font-size: 0.9rem;
-        }
-
-        .q-level {
-            font-size: 0.8rem;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-weight: 600;
-        }
-
-        .level-de {
-            background: #c6f7d0;
-            color: #155f2a;
-        }
-
-        .level-tb {
-            background: #ffe6b3;
-            color: #a66400;
-        }
-
-        .level-kho {
-            background: #ffd9d9;
-            color: #b91c1c;
-        }
-
-        .level-ly {
-            background: #d9eaff;
-            color: #004e92;
-        }
-
-        .question-text {
-            font-size: 1.2rem;
-            margin: 12px 0 18px 0;
-            font-weight: 500;
-            line-height: 1.45;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin: 16px 0 12px;
-        }
-
-        .opt {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: #f9fbfe;
-            padding: 10px 16px;
-            border-radius: 60px;
-            border: 1px solid #dfeaf5;
-            transition: 0.1s;
-            cursor: pointer;
-        }
-
-        .opt input {
-            transform: scale(1.1);
-            accent-color: #005aa7;
-            cursor: pointer;
-        }
-
-        .opt label {
-            font-size: 1rem;
-            cursor: pointer;
-            flex: 1;
-            font-family: 'Courier New', 'Segoe UI', monospace;
-        }
-
-        /* trạng thái đúng/sai */
-        .opt-correct {
-            background: #c8f0d1;
-            border-color: #2e7d32;
-            box-shadow: 0 0 0 2px #2e7d32 inset;
-        }
-
-        .opt-wrong {
-            background: #ffe0e0;
-            border-color: #c62828;
-            box-shadow: 0 0 0 2px #c62828 inset;
-        }
-
-        .feedback {
-            margin-top: 16px;
-            background: #fefce8;
-            border-left: 8px solid #f59e0b;
-            padding: 14px 20px;
-            border-radius: 24px;
-            font-size: 0.95rem;
-            display: none;
-        }
-
-        .feedback.show {
-            display: block;
-        }
-
-        .feedback strong {
-            color: #b45309;
-        }
-
-        .tip {
-            background: #e6f4ea;
-            border-left-color: #2b6e3b;
-            margin-top: 12px;
-            padding: 10px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        hr {
-            margin: 8px 0;
-            border-color: #dce5f0;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 0.8rem;
-            color: #5a6e85;
-        }
-
-        /* Đảm bảo công thức không bị tràn */
-        .MJXc-display, .mjx-chtml {
-            overflow-x: auto;
-            overflow-y: hidden;
-        }
-        @media (max-width: 700px) {
-            .container {
-                padding: 16px;
-            }
-            .question-card {
-                padding: 16px;
-            }
-        }
-    </style>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    margin:0;
+    padding:20px;
+    line-height:1.6;
+}
+.container{
+    max-width:1100px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 0 12px rgba(0,0,0,0.15);
+}
+h1,h2{
+    text-align:center;
+}
+.question{
+    border:1px solid #ddd;
+    padding:18px;
+    border-radius:10px;
+    margin-bottom:25px;
+}
+.option{
+    display:block;
+    margin:8px 0;
+    padding:10px;
+    border-radius:8px;
+    background:#f1f1f1;
+    cursor:pointer;
+    transition:0.3s;
+}
+.option:hover{
+    background:#ddd;
+}
+.correct{
+    background:#7CFC8A !important;
+}
+.wrong{
+    background:#ff7b7b !important;
+}
+.answer-box{
+    margin-top:12px;
+    padding:12px;
+    border-left:5px solid #3498db;
+    background:#eef7ff;
+    display:none;
+}
+.easy{
+    border-left:8px solid #2ecc71;
+}
+.medium{
+    border-left:8px solid #f39c12;
+}
+.hard{
+    border-left:8px solid #e74c3c;
+}
+.theory{
+    border-left:8px solid #9b59b6;
+}
+</style>
 </head>
 <body>
-<div class="container" id="appContainer">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-        <div>
-            <h1>📐 ĐẠO HÀM HÀM ẨN</h1>
-            <div class="sub">“Hai bước: đạo hàm hai vế → nhóm & cô lập y'” — 20 câu trắc nghiệm có giải thích & mẹo</div>
-        </div>
-        <div class="toolbar">
-            <div class="stats" id="progressStats">📊 0/20 đã trả lời</div>
-            <button class="btn-download" id="downloadBtn">⬇️ Tải đề thi (HTML)</button>
-        </div>
-    </div>
 
-    <div id="questionsList"></div>
-    <footer>
-        ✨ Mỗi câu chọn đáp án → hiện xanh đúng / đỏ sai + giải thích chi tiết + mẹo nhanh.<br>
-        📌 Sử dụng MathJax cho công thức. Dựa trên bài giảng của Dr.rer.nat Duymt.
-    </footer>
+<div class="container">
+<h1>ĐỀ THI TRẮC NGHIỆM TƯƠNG TÁC</h1>
+<h2>Định Lý Trung Bình Tích Phân</h2>
+
+<div id="quiz"></div>
+
 </div>
 
 <script>
-    // ----------------------------- DANH SÁCH CÂU HỎI (đã được kiểm tra công thức LaTeX) -------------------------
-    const questions = [
-        // ----- LÝ THUYẾT (câu 1-5) -----
-        { id: 0, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
-          text: "Theo bài giảng, thế nào là một hàm ẩn (implicit function)?",
-          options: [
-            "Hàm số có dạng \\( y = f(x) \\) tường minh.",
-            "Phương trình \\( F(x,y) = 0 \\) trong đó \\(x\\) và \\(y\\) trộn lẫn, không thể tách riêng \\(y\\).",
-            "Hàm số được cho dưới dạng bảng giá trị.",
-            "Hàm số luôn có đạo hàm bằng 0."
-          ],
-          correct: 1,
-          explanation: "Hàm ẩn là phương trình liên hệ giữa x và y, không giải được y = f(x) một cách tường minh. Ví dụ: \\(x^2 + y^2 = 1\\).",
-          tip: "Nhận diện: thấy cả x và y lẫn lộn, không cô lập được y ở một vế → hàm ẩn."
-        },
-        { id: 1, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
-          text: "Bước đầu tiên khi tìm đạo hàm \\(y'\\) của hàm ẩn là gì?",
-          options: [
-            "Rút y từ phương trình.",
-            "Nhóm các số hạng chứa \\(y'\\) lại.",
-            "Đạo hàm hai vế theo biến \\(x\\), coi \\(y\\) là hàm của \\(x\\).",
-            "Thay điểm cụ thể vào phương trình."
-          ],
-          correct: 2,
-          explanation: "Luôn bắt đầu bằng đạo hàm hai vế theo x, nhớ quy tắc dây chuyền với y.",
-          tip: "Ghi nhớ: “đạo hàm hai vế, rồi nhóm và cô lập y'” – không tách y trước."
-        },
-        { id: 2, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
-          text: "Khi đạo hàm biểu thức \\(y^3\\) theo \\(x\\) (với y là hàm của x), kết quả là:",
-          options: [
-            "\\(3y^2\\)",
-            "\\(3y^2 \\cdot y'\\)",
-            "\\(y^3 \\cdot y'\\)",
-            "\\(3x^2\\)"
-          ],
-          correct: 1,
-          explanation: "Theo quy tắc dây chuyền: \\(\\frac{d}{dx}(y^3) = 3y^2 \\cdot \\frac{dy}{dx} = 3y^2 y'\\).",
-          tip: "Mẹo: đạo hàm theo x → gặp y thì nhân thêm y' (hàm hợp)."
-        },
-        { id: 3, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
-          text: "Để đạo hàm \\(x^2 y\\) theo \\(x\\), cần áp dụng quy tắc nào?",
-          options: [
-            "Quy tắc thương",
-            "Quy tắc hằng số",
-            "Quy tắc tích và quy tắc dây chuyền",
-            "Quy tắc lũy thừa đơn thuần"
-          ],
-          correct: 2,
-          explanation: "\\((x^2 y)' = (x^2)' y + x^2 y' = 2xy + x^2 y'\\) (tích + dây chuyền với y).",
-          tip: "Luôn nhớ: đạo hàm tích: u'v + uv', và v' = y' khi v = y."
-        },
-        { id: 4, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
-          text: "Trong phương trình hàm ẩn \\(F(x,y)=C\\) (C hằng số), đạo hàm của vế phải bằng:",
-          options: ["0", "1", "C", "không xác định"],
-          correct: 0,
-          explanation: "Đạo hàm của hằng số luôn bằng 0, giúp ta thiết lập phương trình cho y'.",
-          tip: "Vế phải là hằng số → đạo hàm = 0, đừng quên khi viết phương trình."
-        },
+const questions = [
 
-        // ----- BÀI TẬP DỄ (5 câu) -----
-        { id: 5, type: "baitap", level: "Dễ", levelCode: "de",
-          text: "Cho phương trình hàm ẩn \\(x^2 + y^2 = 25\\). Tính \\(y' = \\frac{dy}{dx}\\).",
-          options: ["\\(-\\frac{x}{y}\\)", "\\(\\frac{x}{y}\\)", "\\(-\\frac{y}{x}\\)", "\\(\\frac{y}{x}\\)"],
-          correct: 0,
-          explanation: "Đạo hàm 2 vế: \\(2x + 2y y' = 0 \\Rightarrow y' = -\\frac{x}{y}\\).",
-          tip: "Mẹo: đạo hàm x² và y², chuyển vế nhanh, nhớ dấu trừ."
-        },
-        { id: 6, type: "baitap", level: "Dễ", levelCode: "de",
-          text: "Với \\(x^3 + y^3 = 1\\), đạo hàm \\(y'\\) là:",
-          options: ["\\(-\\frac{x^2}{y^2}\\)", "\\(-\\frac{y^2}{x^2}\\)", "\\(\\frac{x^2}{y^2}\\)", "\\(-\\frac{3x^2}{3y^2}\\)"],
-          correct: 0,
-          explanation: "Đạo hàm: \\(3x^2 + 3y^2 y' = 0 \\Rightarrow y' = -\\frac{x^2}{y^2}\\).",
-          tip: "Rút gọn hệ số 3: kết quả là \\( -x^2/y^2\\)."
-        },
-        { id: 7, type: "baitap", level: "Dễ", levelCode: "de",
-          text: "Tìm \\(y'\\) của hàm ẩn \\(xy = 1\\).",
-          options: ["\\(\\frac{y}{x}\\)", "\\(-\\frac{x}{y}\\)", "\\(-\\frac{y}{x}\\)", "\\(\\frac{x}{y}\\)"],
-          correct: 2,
-          explanation: "Đạo hàm: \\(y + x y' = 0 \\Rightarrow y' = -\\frac{y}{x}\\).",
-          tip: "Nhanh: từ xy=1 → y = 1/x → y' = -1/x² nhưng dạng ẩn cũng ra -y/x."
-        },
-        { id: 8, type: "baitap", level: "Dễ", levelCode: "de",
-          text: "Cho \\(x^2 - y^2 = 4\\). Khi đó \\(y'\\) bằng:",
-          options: ["\\(\\frac{x}{y}\\)", "\\(-\\frac{x}{y}\\)", "\\(\\frac{y}{x}\\)", "\\(\\frac{2x}{2y}\\)"],
-          correct: 0,
-          explanation: "\\(2x - 2y y' = 0 \\Rightarrow -2y y' = -2x \\Rightarrow y' = x/y\\).",
-          tip: "Lưu ý dấu: chuyển vế cẩn thận, kết quả \\(y' = x/y\\)."
-        },
-        { id: 9, type: "baitap", level: "Dễ", levelCode: "de",
-          text: "Cho hàm ẩn \\(y^2 = 4x\\). Tính \\(y'\\).",
-          options: ["\\(\\frac{2}{y}\\)", "\\(\\frac{4}{y}\\)", "\\(\\frac{1}{2y}\\)", "\\(\\frac{4x}{y}\\)"],
-          correct: 0,
-          explanation: "Đạo hàm: \\(2y y' = 4 \\Rightarrow y' = \\frac{4}{2y} = \\frac{2}{y}\\).",
-          tip: "Đạo hàm y² → 2y y', đơn giản hệ số."
-        },
+{
+type:"theory",
+question:"1. Ý nghĩa hình học của giá trị trung bình tích phân là gì?",
+options:[
+"Độ dốc trung bình của đồ thị",
+"Chiều cao trung bình của đồ thị",
+"Chu vi trung bình của đồ thị",
+"Đạo hàm trung bình của đồ thị"
+],
+correct:1,
+explanation:"Giá trị trung bình tích phân biểu diễn chiều cao trung bình của đồ thị trên đoạn xét.",
+tip:"Hãy nhớ công thức: diện tích chia chiều dài = chiều cao trung bình."
+},
 
-        // ----- BÀI TẬP TRUNG BÌNH (5 câu) -----
-        { id: 10, type: "baitap", level: "Trung bình", levelCode: "tb",
-          text: "Cho \\(x^2 y + y^2 x = 2\\). Tìm biểu thức \\(y'\\).",
-          options: [
-            "\\(-\\frac{2xy + y^2}{x^2 + 2xy}\\)",
-            "\\(-\\frac{2xy + y^2}{x^2 + 2xy}\\)",  // giống A, đặt lại cho đúng
-            "\\(-\\frac{x^2 + y^2}{2xy}\\)",
-            "\\(-\\frac{2x + y}{x + 2y}\\)"
-          ],
-          correct: 0,
-          explanation: "Đạo hàm: \\((2xy + x^2 y') + (y^2 + 2xy y') = 0 \\Rightarrow y'(x^2 + 2xy) = -2xy - y^2 \\Rightarrow y' = -\\frac{2xy + y^2}{x^2 + 2xy}\\).",
-          tip: "Nhóm y': từ \\(x^2 y' + 2xy y' = y'(x^2+2xy)\\), chuyển vế phần còn lại."
-        },
-        { id: 11, type: "baitap", level: "Trung bình", levelCode: "tb",
-          text: "Tìm \\(y'\\) biết \\(x^2 + 2xy + y^2 = 1\\). (gợi ý \\((x+y)^2=1\\))",
-          options: ["\\(-1\\)", "\\(1\\)", "\\(-\\frac{x}{y}\\)", "\\(\\frac{y}{x}\\)"],
-          correct: 0,
-          explanation: "Đạo hàm: \\(2x + 2y + 2xy' + 2yy' = 0 \\Rightarrow 2(x+y) + 2y'(x+y)=0 \\Rightarrow (x+y)(1+y')=0\\). Với \\(x+y \\neq 0\\) thì \\(y' = -1\\).",
-          tip: "Nếu x+y khác 0 → y' = -1. Dạng này đẹp, nhớ chia (x+y)."
-        },
-        { id: 12, type: "baitap", level: "Trung bình", levelCode: "tb",
-          text: "Cho \\(x^3 + 3x^2 y + y^3 = 0\\). Tính \\(y'\\).",
-          options: [
-            "\\(-\\frac{x^2 + 2xy}{x^2 + y^2}\\)",
-            "\\(-\\frac{3x^2+6xy}{3x^2+3y^2}\\)",
-            "\\(-\\frac{x^2+2xy}{x^2+y^2}\\)",
-            "\\(-\\frac{x^2+2xy}{x^2+y^2}\\)"
-          ],
-          correct: 0,
-          explanation: "Đạo hàm: \\(3x^2 + (6xy + 3x^2 y') + 3y^2 y' = 0\\) ⇒ nhóm \\(y'(3x^2+3y^2) = -3x^2-6xy\\) ⇒ \\(y' = -\\frac{x^2+2xy}{x^2+y^2}\\).",
-          tip: "Chia cả tử mẫu cho 3 rút gọn."
-        },
-        { id: 13, type: "baitap", level: "Trung bình", levelCode: "tb",
-          text: "Với \\(\\sin(xy) = x\\), hãy tìm \\(y'\\).",
-          options: [
-            "\\(\\frac{1 - y\\cos(xy)}{x\\cos(xy)}\\)",
-            "\\(\\frac{1 - y\\cos(xy)}{x\\cos(xy)}\\)",
-            "\\(\\frac{\\cos(xy) - y}{x}\\)",
-            "\\(\\frac{1 - xy}{\\cos(xy)}\\)"
-          ],
-          correct: 0,
-          explanation: "Đạo hàm: \\(\\cos(xy)\\cdot (y + xy') = 1 \\Rightarrow y\\cos(xy) + x\\cos(xy) y' = 1 \\Rightarrow y' = \\frac{1 - y\\cos(xy)}{x\\cos(xy)}\\).",
-          tip: "Nhớ đạo hàm sin(u) = cos(u).u', u = xy → u' = y + xy'."
-        },
-        { id: 14, type: "baitap", level: "Trung bình", levelCode: "tb",
-          text: "Cho \\(e^{x+y} = x^2\\). Tìm \\(y'\\).",
-          options: [
-            "\\(\\frac{2x - e^{x+y}}{e^{x+y}}\\)",
-            "\\(\\frac{2x}{e^{x+y}} - 1\\)",
-            "Cả A và B đều đúng",
-            "\\(\\frac{2x - e^{x+y}}{e^{x+y}}\\)"
-          ],
-          correct: 0,
-          explanation: "Đạo hàm: \\(e^{x+y}(1+y') = 2x \\Rightarrow 1+y' = 2x e^{-(x+y)} \\Rightarrow y' = 2x e^{-(x+y)} -1\\). Mà \\(e^{-(x+y)} = 1/x^2\\) nên viết gọn: \\(y' = \\frac{2}{x} -1\\) nhưng đáp án dạng tổng quát: \\(y' = \\frac{2x - e^{x+y}}{e^{x+y}}\\).",
-          tip: "Có thể thay \\(e^{x+y}=x^2\\) để kiểm tra."
-        },
+{
+type:"theory",
+question:"2. Công thức giá trị trung bình của hàm số liên tục trên [a,b] là:",
+options:[
+"\\(\\int_a^b f(x)dx\\)",
+"\\(\\frac{1}{a-b}\\int_a^b f(x)dx\\)",
+"\\(\\frac{1}{b-a}\\int_a^b f(x)dx\\)",
+"\\(f(a)+f(b)\\)"
+],
+correct:2,
+explanation:"Định lý trung bình tích phân có công thức chuẩn là: \\(f_{tb}=\\frac{1}{b-a}\\int_a^b f(x)dx\\).",
+tip:"Luôn chú ý mẫu số phải là b-a."
+},
 
-        // ----- BÀI TẬP KHÓ (5 câu) -----
-        { id: 15, type: "baitap", level: "Khó", levelCode: "kho",
-          text: "Cho phương trình hàm ẩn: \\(x^3 + 3x^2y + y^2 x + y^3 = 1\\). Tìm \\(y'\\).",
-          options: [
-            "\\(-\\frac{3x^2 + 6xy + y^2}{3x^2 + 2xy + 3y^2}\\)",
-            "\\(-\\frac{3x^2 + 6xy + y^2}{x^2 + 2xy + 3y^2}\\)",
-            "\\(\\frac{3x^2 + 6xy + y^2}{3x^2 + 2xy + 3y^2}\\)",
-            "\\(-\\frac{3x^2 + 2xy + 3y^2}{3x^2 + 6xy + y^2}\\)"
-          ],
-          correct: 0,
-          explanation: "Đạo hàm: \\(3x^2 + (6xy + 3x^2 y') + (2xy y' + y^2) + 3y^2 y' = 0\\) ⇔ \\(3x^2+6xy+y^2 + y'(3x^2+2xy+3y^2)=0\\) ⇒ \\(y' = -\\frac{3x^2+6xy+y^2}{3x^2+2xy+3y^2}\\).",
-          tip: "Mẹo: tách riêng đạo hàm của từng tích: với x²y và xy² cẩn thận hệ số."
-        },
-        { id: 16, type: "baitap", level: "Khó", levelCode: "kho",
-          text: "Cho \\(x^2 y^3 + x^3 y^2 = 1\\). Tính \\(y'\\).",
-          options: [
-            "\\(-\\frac{2xy^3 + 3x^2 y^2}{3x^2 y^2 + 2x^3 y}\\)",
-            "\\(-\\frac{2xy^3 + 3x^2 y^2}{3x^2 y^2 + 2x^3 y}\\)",
-            "\\(-\\frac{2y^3 + 3xy^2}{3xy^2 + 2x^2 y}\\)",
-            "\\(\\frac{2xy^3+3x^2y^2}{3x^2y^2+2x^3y}\\)"
-          ],
-          correct: 0,
-          explanation: "Đạo hàm từng hạng tử: \\(\\frac{d}{dx}(x^2y^3)=2xy^3 + x^2\\cdot3y^2 y'\\); \\(x^3y^2 = 3x^2y^2 + x^3\\cdot 2y y'\\). Cộng lại =0 ⇒ nhóm y' ra: \\(y'(3x^2y^2+2x^3y) = -(2xy^3+3x^2y^2)\\).",
-          tip: "Đặt thừa số chung: có thể rút gọn \\(xy^2\\) nhưng giữ nguyên dạng."
-        },
-        { id: 17, type: "baitap", level: "Khó", levelCode: "kho",
-          text: "Tìm \\(y'\\) của hàm ẩn: \\(\\ln(xy) = x + y\\).",
-          options: [
-            "\\(\\frac{y(1 - xy)}{x(xy - 1)}\\)",
-            "\\(\\frac{1 - xy}{x(y-1)}\\)",
-            "\\(\\frac{y - xy}{x + xy}\\)",
-            "\\(\\frac{y(1 - xy)}{x(xy - 1)}\\)"
-          ],
-          correct: 0,
-          explanation: "\\(\\ln x + \\ln y = x+y\\) ⇒ đạo hàm: \\(\\frac{1}{x} + \\frac{y'}{y} = 1 + y'\\) ⇒ \\(\\frac{y'}{y} - y' = 1 - \\frac{1}{x}\\) ⇒ \\(y'(\\frac{1}{y} - 1) = \\frac{x-1}{x}\\) ⇒ quy đồng: \\(y' = \\frac{(x-1)/x}{(1-y)/y} = \\frac{y(x-1)}{x(1-y)} = \\frac{y(1-xy)}{x(xy-1)}\\) (biến đổi tương đương).",
-          tip: "Nhân chéo và rút gọn, chú ý điều kiện xy>0."
-        },
-        { id: 18, type: "baitap", level: "Khó", levelCode: "kho",
-          text: "Cho \\(x^y = y^x\\) (với x,y>0). Tìm \\(y'\\).",
-          options: [
-            "\\(\\frac{y(x\\ln y - y)}{x(y\\ln x - x)}\\)",
-            "\\(\\frac{y^2 - x^2}{xy(\\ln x - \\ln y)}\\)",
-            "\\(\\frac{y(x \\ln y - y)}{x(y \\ln x - x)}\\)",
-            "\\(\\frac{x \\ln y - y}{y \\ln x - x}\\)"
-          ],
-          correct: 0,
-          explanation: "Lấy ln: \\(y\\ln x = x\\ln y\\) ⇒ đạo hàm: \\(y'\\ln x + \\frac{y}{x} = \\ln y + x\\frac{y'}{y}\\) ⇒ \\(y'(\\ln x - \\frac{x}{y}) = \\ln y - \\frac{y}{x}\\) ⇒ quy đồng: \\(y' = \\frac{\\ln y - y/x}{\\ln x - x/y} = \\frac{y(x\\ln y - y)}{x(y\\ln x - x)}\\).",
-          tip: "Dùng logarit hóa rồi đạo hàm ẩn là cách hiệu quả nhất cho dạng mũ."
-        },
-        { id: 19, type: "baitap", level: "Khó", levelCode: "kho",
-          text: "Phương trình \\(x^2 + xy + y^2 = 7\\). Tìm \\(y'\\) dưới dạng tổng quát.",
-          options: [
-            "\\(-\\frac{2x + y}{x + 2y}\\)",
-            "\\(-\\frac{2x + y}{x + 2y}\\)",
-            "\\(\\frac{2x + y}{x + 2y}\\)",
-            "\\(-\\frac{x + 2y}{2x + y}\\)"
-          ],
-          correct: 0,
-          explanation: "Đạo hàm: \\(2x + (y + xy') + 2y y' = 0\\) ⇒ \\(2x + y + y'(x+2y)=0\\) ⇒ \\(y' = -\\frac{2x+y}{x+2y}\\).",
-          tip: "Công thức nhanh cho dạng bậc 2: \\(Ax^2+Bxy+Cy^2 = D\\) ⇒ \\(y' = -\\frac{2Ax+By}{Bx+2Cy}\\)."
-        }
-    ];
+{
+type:"theory",
+question:"3. Trong công thức trung bình tích phân, \\(\\int_a^b f(x)dx\\) biểu diễn điều gì?",
+options:[
+"Đạo hàm của hàm số",
+"Diện tích dưới đường cong",
+"Chiều dài đoạn",
+"Độ cong của đồ thị"
+],
+correct:1,
+explanation:"Tích phân xác định biểu diễn diện tích hình phẳng giới hạn bởi đồ thị và trục hoành.",
+tip:"Tích phân thường gắn với diện tích."
+},
 
-    // State lưu câu trả lời đã chọn (lưu index lựa chọn, -1 nếu chưa chọn)
-    let selectedAnswers = new Array(20).fill(-1);
+{
+type:"theory",
+question:"4. Điều kiện để áp dụng định lý trung bình tích phân là:",
+options:[
+"Hàm số liên tục trên [a,b]",
+"Hàm số có đạo hàm",
+"Hàm số tuần hoàn",
+"Hàm số tăng"
+],
+correct:0,
+explanation:"Định lý yêu cầu hàm số liên tục trên đoạn [a,b].",
+tip:"Nhìn thấy 'trung bình tích phân' thì nhớ ngay tính liên tục."
+},
 
-    // Hàm render toàn bộ câu hỏi
-    async function renderQuestions() {
-        const container = document.getElementById('questionsList');
-        container.innerHTML = '';
-        questions.forEach((q, idx) => {
-            const card = document.createElement('div');
-            card.className = 'question-card';
-            card.setAttribute('data-qid', idx);
-            const levelClass = q.levelCode === 'de' ? 'level-de' : (q.levelCode === 'tb' ? 'level-tb' : (q.levelCode === 'kho' ? 'level-kho' : 'level-ly'));
-            const levelText = q.type === 'lythuyet' ? `📖 ${q.level}` : `✏️ ${q.level}`;
-            card.innerHTML = `
-                <div class="question-header">
-                    <span class="q-num">Câu ${idx+1}</span>
-                    <span class="q-level ${levelClass}">${levelText}</span>
-                </div>
-                <div class="question-text math">${q.text}</div>
-                <div class="options" id="options-${idx}">
-                    ${q.options.map((opt, optIdx) => `
-                        <div class="opt" data-optidx="${optIdx}" data-qidx="${idx}">
-                            <input type="radio" name="q${idx}" id="q${idx}_opt${optIdx}" value="${optIdx}" ${selectedAnswers[idx] === optIdx ? 'checked' : ''}>
-                            <label for="q${idx}_opt${optIdx}" class="math">${String.fromCharCode(65+optIdx)}. ${opt}</label>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="feedback" id="fb-${idx}">
-                    <strong>📌 Đáp án đúng: ${String.fromCharCode(65+q.correct)}</strong><br>
-                    <strong>✍️ Giải thích:</strong> <span class="math">${q.explanation}</span><br>
-                    <div class="tip">💡 <strong>Mẹo nhanh:</strong> <span class="math">${q.tip}</span></div>
-                </div>
-            `;
-            container.appendChild(card);
-            // Gán sự kiện cho các radio
-            const radios = card.querySelectorAll(`input[type="radio"]`);
-            radios.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    const qid = parseInt(radio.name.slice(1));
-                    const selectedVal = parseInt(radio.value);
-                    handleAnswer(qid, selectedVal);
-                });
-            });
-            // Nếu đã có lựa chọn trước đó, hiển thị lại trạng thái màu và feedback
-            if (selectedAnswers[idx] !== -1) {
-                applyStyleAndFeedback(idx, selectedAnswers[idx]);
+{
+type:"theory",
+question:"5. Giá trị trung bình tích phân giúp thay đường cong phức tạp bằng:",
+options:[
+"Hình tam giác tương đương",
+"Hình tròn tương đương",
+"Hình chữ nhật cùng diện tích",
+"Hình thang cân"
+],
+correct:2,
+explanation:"Chiều cao trung bình chính là chiều cao của hình chữ nhật có cùng diện tích với miền dưới đồ thị.",
+tip:"Đường cong → quy đổi thành hình chữ nhật."
+},
+
+{
+type:"easy",
+question:"6. Tính giá trị trung bình của \\(f(x)=x\\) trên đoạn [0,2].",
+options:[
+"1",
+"2",
+"3",
+"4"
+],
+correct:0,
+explanation:"\\(f_{tb}=\\frac{1}{2-0}\\int_0^2 xdx = \\frac{1}{2}\\cdot 2 =1\\).",
+tip:"Hàm bậc nhất trên đoạn đối xứng thường cho trung bình là trung điểm."
+},
+
+{
+type:"easy",
+question:"7. Tính \\(f_{tb}\\) của \\(f(x)=2\\) trên [1,5].",
+options:[
+"0",
+"1",
+"2",
+"5"
+],
+correct:2,
+explanation:"Hàm hằng thì giá trị trung bình chính là chính nó.",
+tip:"Hàm số không đổi → trung bình không đổi."
+},
+
+{
+type:"easy",
+question:"8. Tính giá trị trung bình của \\(f(x)=x^2\\) trên [0,1].",
+options:[
+"\\(\\frac{1}{2}\\)",
+"\\(\\frac{1}{3}\\)",
+"1",
+"2"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\int_0^1 x^2dx = \\frac{1}{3}\\).",
+tip:"Nhớ công thức nguyên hàm: \\(x^n → \\frac{x^{n+1}}{n+1}\\)."
+},
+
+{
+type:"easy",
+question:"9. Tính giá trị trung bình của \\(f(x)=3x\\) trên [0,2].",
+options:[
+"2",
+"3",
+"4",
+"6"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_0^2 3xdx =3\\).",
+tip:"Có thể lấy hệ số 3 ra ngoài tích phân."
+},
+
+{
+type:"easy",
+question:"10. Tính giá trị trung bình của \\(f(x)=x+1\\) trên [0,2].",
+options:[
+"1",
+"2",
+"3",
+"4"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_0^2(x+1)dx =2\\).",
+tip:"Tách tích phân thành hai phần nhỏ."
+},
+
+{
+type:"medium",
+question:"11. Tính giá trị trung bình của \\(f(x)=x^2+1\\) trên [0,2].",
+options:[
+"\\(\\frac{7}{3}\\)",
+"\\(\\frac{5}{3}\\)",
+"3",
+"4"
+],
+correct:0,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_0^2(x^2+1)dx = \\frac{7}{3}\\).",
+tip:"Luôn tính tích phân trước rồi mới chia cho b-a."
+},
+
+{
+type:"medium",
+question:"12. Giá trị trung bình của \\(f(x)=\\sin x\\) trên [0,π] là:",
+options:[
+"0",
+"\\(\\frac{2}{\\pi}\\)",
+"1",
+"2"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{\\pi}\\int_0^{\\pi}\\sin xdx =\\frac{2}{\\pi}\\).",
+tip:"\\(\\int_0^{\\pi}\\sin xdx =2\\) là kết quả rất quen thuộc."
+},
+
+{
+type:"medium",
+question:"13. Tính giá trị trung bình của \\(f(x)=x^3\\) trên [0,2].",
+options:[
+"2",
+"4",
+"6",
+"8"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_0^2 x^3dx =4\\).",
+tip:"Lũy thừa cao → cẩn thận khi thay cận."
+},
+
+{
+type:"medium",
+question:"14. Tính giá trị trung bình của \\(f(x)=2x+5\\) trên [1,3].",
+options:[
+"7",
+"8",
+"9",
+"10"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\frac{1}{2}\\int_1^3(2x+5)dx =8\\).",
+tip:"Với hàm bậc nhất, trung bình bằng trung bình cộng hai đầu mút."
+},
+
+{
+type:"medium",
+question:"15. Giá trị trung bình của \\(f(x)=\\cos x\\) trên [0,π/2] là:",
+options:[
+"0",
+"\\(\\frac{1}{2}\\)",
+"\\(\\frac{2}{\\pi}\\)",
+"1"
+],
+correct:2,
+explanation:"\\(f_{tb}=\\frac{2}{\\pi}\\int_0^{\\pi/2}\\cos xdx =\\frac{2}{\\pi}\\).",
+tip:"\\(\\int cosx dx = sinx\\)."
+},
+
+{
+type:"hard",
+question:"16. Tính giá trị trung bình của \\(f(x)=x^2-2x\\) trên [0,3].",
+options:[
+"0",
+"1",
+"2",
+"3"
+],
+correct:0,
+explanation:"\\(f_{tb}=\\frac{1}{3}\\int_0^3(x^2-2x)dx =0\\).",
+tip:"Có thể triệt tiêu giữa phần dương và âm."
+},
+
+{
+type:"hard",
+question:"17. Tính giá trị trung bình của \\(f(x)=e^x\\) trên [0,1].",
+options:[
+"e",
+"e-1",
+"\\(\\frac{e-1}{2}\\)",
+"1"
+],
+correct:1,
+explanation:"\\(f_{tb}=\\int_0^1 e^x dx = e-1\\).",
+tip:"Nguyên hàm của \\(e^x\\) vẫn là chính nó."
+},
+
+{
+type:"hard",
+question:"18. Tính giá trị trung bình của \\(f(x)=\\ln x\\) trên [1,e].",
+options:[
+"0",
+"1",
+"\\(\\frac{1}{e-1}\\)",
+"\\(\\frac{1}{2}\\)"
+],
+correct:2,
+explanation:"\\(f_{tb}=\\frac{1}{e-1}\\int_1^e\\ln xdx =\\frac{1}{e-1}\\).",
+tip:"Nhớ công thức: \\(\\int lnx dx = xlnx-x\\)."
+},
+
+{
+type:"hard",
+question:"19. Tính giá trị trung bình của \\(f(x)=x\\sin x\\) trên [0,π].",
+options:[
+"1",
+"\\(\\frac{2}{\\pi}\\)",
+"π",
+"2"
+],
+correct:3,
+explanation:"\\(f_{tb}=\\frac{1}{\\pi}\\int_0^{\\pi}x\\sin xdx =2\\).",
+tip:"Dùng tích phân từng phần."
+},
+
+{
+type:"hard",
+question:"20. Nếu \\(f_{tb}=5\\) trên đoạn [1,4], thì tích phân \\(\\int_1^4 f(x)dx\\) bằng:",
+options:[
+"5",
+"10",
+"15",
+"20"
+],
+correct:2,
+explanation:"\\(\\int_1^4 f(x)dx = f_{tb}(b-a)=5(4-1)=15\\).",
+tip:"Có thể biến đổi ngược công thức trung bình tích phân."
+}
+
+];
+
+const quiz = document.getElementById("quiz");
+
+questions.forEach((q,index)=>{
+    const div=document.createElement("div");
+    div.className=`question ${q.type}`;
+
+    let level = "";
+    if(q.type==="easy") level="🟢 Dễ";
+    if(q.type==="medium") level="🟠 Trung Bình";
+    if(q.type==="hard") level="🔴 Khó";
+    if(q.type==="theory") level="📘 Lý Thuyết";
+
+    div.innerHTML=`<h3>${level}</h3><p>${q.question}</p>`;
+
+    q.options.forEach((opt,i)=>{
+        const btn=document.createElement("button");
+        btn.className="option";
+        btn.innerHTML=opt;
+
+        btn.onclick=()=>{
+            const buttons=div.querySelectorAll(".option");
+            buttons.forEach(b=>b.disabled=true);
+
+            if(i===q.correct){
+                btn.classList.add("correct");
+            }else{
+                btn.classList.add("wrong");
+                buttons[q.correct].classList.add("correct");
             }
-        });
-        // Chờ MathJax render lại toàn bộ công thức mới
-        if (window.MathJax) {
-            await MathJax.typesetPromise();
-        }
-        updateProgress();
-    }
 
-    function handleAnswer(qid, selectedIdx) {
-        const q = questions[qid];
-        // Lưu lại lựa chọn
-        selectedAnswers[qid] = selectedIdx;
-        // Cập nhật giao diện màu sắc và feedback
-        applyStyleAndFeedback(qid, selectedIdx);
-        updateProgress();
-    }
+            const ans=div.querySelector(".answer-box");
+            ans.style.display="block";
+        };
 
-    function applyStyleAndFeedback(qid, selectedIdx) {
-        const q = questions[qid];
-        const card = document.querySelector(`.question-card[data-qid='${qid}']`);
-        if (!card) return;
-        const allOptDivs = card.querySelectorAll('.opt');
-        allOptDivs.forEach(div => {
-            div.classList.remove('opt-correct', 'opt-wrong');
-        });
-        const chosenDiv = card.querySelector(`.opt[data-optidx='${selectedIdx}']`);
-        if (chosenDiv) {
-            if (selectedIdx === q.correct) {
-                chosenDiv.classList.add('opt-correct');
-            } else {
-                chosenDiv.classList.add('opt-wrong');
-                const correctDiv = card.querySelector(`.opt[data-optidx='${q.correct}']`);
-                if (correctDiv) correctDiv.classList.add('opt-correct');
-            }
-        } else {
-            const correctDiv = card.querySelector(`.opt[data-optidx='${q.correct}']`);
-            if (correctDiv) correctDiv.classList.add('opt-correct');
-        }
-        const feedbackDiv = card.querySelector(`.feedback`);
-        if (feedbackDiv) {
-            feedbackDiv.classList.add('show');
-        }
-    }
+        div.appendChild(btn);
+    });
 
-    function updateProgress() {
-        let answeredCount = selectedAnswers.filter(idx => idx !== -1).length;
-        document.getElementById('progressStats').innerHTML = `📊 ${answeredCount}/20 đã trả lời`;
-    }
+    const ans=document.createElement("div");
+    ans.className="answer-box";
+    ans.innerHTML=`
+    <strong>Đáp án đúng:</strong> ${q.options[q.correct]}<br><br>
+    <strong>Giải thích:</strong> ${q.explanation}<br><br>
+    <strong>Mẹo làm nhanh:</strong> ${q.tip}
+    `;
 
-    // Tải file html về máy
-    function downloadPage() {
-        let htmlContent = document.documentElement.outerHTML;
-        const blob = new Blob([htmlContent], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'trac_nghiem_dao_ham_ham_an.html';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
+    div.appendChild(ans);
+    quiz.appendChild(div);
+});
 
-    document.getElementById('downloadBtn').addEventListener('click', downloadPage);
-    // Khởi tạo
-    renderQuestions();
 </script>
+
 </body>
 </html>
