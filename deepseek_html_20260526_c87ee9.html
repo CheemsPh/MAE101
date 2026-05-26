@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Trắc nghiệm: Hàm số – Bản chất của sự phụ thuộc và ánh xạ</title>
+    <!-- MathJax cấu hình để hiển thị công thức -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'no-mathjax',
+                processHtmlClass: 'math'
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f4fa;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 30px 20px;
+            color: #1e2f3e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            padding: 28px 32px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #005f73, #0a3e5c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+            display: inline-block;
+        }
+
+        .sub {
+            color: #2c5f8a;
+            border-left: 4px solid #2c7da0;
+            padding-left: 18px;
+            margin: 12px 0 24px 0;
+            font-style: italic;
+            font-size: 1rem;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            background: #eef2fa;
+            padding: 12px 24px;
+            border-radius: 60px;
+        }
+
+        .stats {
+            background: #1f5068;
+            padding: 6px 18px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .btn-download {
+            background: #2a7f6e;
+            border: none;
+            padding: 8px 28px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-download:hover {
+            background: #1e5f51;
+            transform: scale(1.02);
+        }
+
+        .question-card {
+            background: #ffffff;
+            border-radius: 28px;
+            margin-bottom: 32px;
+            padding: 20px 28px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2edf7;
+            transition: all 0.1s;
+        }
+
+        .question-header {
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .q-num {
+            background: #005f73;
+            color: white;
+            font-weight: bold;
+            border-radius: 30px;
+            padding: 4px 14px;
+            font-size: 0.85rem;
+        }
+
+        .q-level {
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .level-ly {
+            background: #e1ecf4;
+            color: #0a4b6e;
+        }
+        .level-de {
+            background: #d1f0de;
+            color: #1a6d3b;
+        }
+        .level-tb {
+            background: #fff0cc;
+            color: #b9730e;
+        }
+        .level-kho {
+            background: #ffe0e0;
+            color: #bc2c1e;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            margin: 12px 0 18px 0;
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 16px 0 14px;
+        }
+
+        .opt {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #f9fcfd;
+            padding: 10px 18px;
+            border-radius: 60px;
+            border: 1px solid #dee9f2;
+            transition: 0.1s;
+            cursor: pointer;
+        }
+
+        .opt input {
+            transform: scale(1.1);
+            accent-color: #005f73;
+            cursor: pointer;
+        }
+
+        .opt label {
+            font-size: 1rem;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .opt-correct {
+            background: #c8f0d9;
+            border-color: #2c7a4d;
+            box-shadow: 0 0 0 2px #2c7a4d inset;
+        }
+
+        .opt-wrong {
+            background: #ffe0df;
+            border-color: #c7362b;
+            box-shadow: 0 0 0 2px #c7362b inset;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            background: #fffef5;
+            border-left: 8px solid #f4b942;
+            padding: 16px 22px;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback strong {
+            color: #b35f00;
+        }
+
+        .tip {
+            background: #eef6ea;
+            border-left: 4px solid #3b8c5e;
+            margin-top: 12px;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            font-size: 0.8rem;
+            color: #5f7d95;
+            border-top: 1px solid #e0ecf5;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 16px;
+            }
+            .question-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="appContainer">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+            <h1>🧠 HÀM SỐ</h1>
+            <div class="sub">“Bản chất của sự phụ thuộc và ánh xạ — Mỗi đầu vào, một đầu ra duy nhất”</div>
+        </div>
+        <div class="toolbar">
+            <div class="stats" id="progressStats">📊 0/20 đã trả lời</div>
+            <button class="btn-download" id="downloadBtn">📥 Tải đề thi (HTML)</button>
+        </div>
+    </div>
+
+    <div id="questionsList"></div>
+    <footer>
+        ✨ Chọn đáp án → hiện xanh (đúng) / đỏ (sai) + giải thích + mẹo làm nhanh.<br>
+        📐 Sử dụng MathJax cho công thức. Dựa trên bài giảng “Hàm số – Dr.rer.nat Duymt”.
+    </footer>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // DANH SÁCH 20 CÂU HỎI (5 lý thuyết + 5 dễ + 5 trung bình + 5 khó)
+    // --------------------------------------------------------------
+    const questions = [
+        // ----- LÝ THUYẾT (5 câu) -----
+        { id: 0, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
+          text: "Theo bài giảng, bản chất cốt lõi của hàm số là gì?",
+          options: [
+            "Một biểu thức đại số chứa biến \(x\) và \(y\).",
+            "Một quy tắc gán mỗi phần tử của tập đầu vào với một và chỉ một phần tử của tập đầu ra.",
+            "Một đường cong trên mặt phẳng tọa độ.",
+            "Một bảng giá trị số."
+          ],
+          correct: 1,
+          explanation: "Hàm số là một quy tắc (ánh xạ) đảm bảo tính duy nhất của đầu ra đối với mỗi đầu vào. Công thức, đồ thị chỉ là cách biểu diễn.",
+          tip: "Nhớ: 'mỗi x chỉ có một y' – đó là linh hồn, không nhất thiết phải có công thức."
+        },
+        { id: 1, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
+          text: "Hệ thức nào dưới đây KHÔNG phải là một hàm số (theo nghĩa \(y\) là hàm của \(x\))?",
+          options: [
+            "\(y = x^2\)",
+            "\(y = \\sin x\)",
+            "\(x^2 + y^2 = 1\)",
+            "\(y = |x|\)"
+          ],
+          correct: 2,
+          explanation: "Đường tròn \(x^2+y^2=1\): với \(x=0\) cho \(y=\\pm 1\) (hai giá trị), vi phạm tính duy nhất.",
+          tip: "Kiểm tra nhanh: vẽ đường thẳng đứng, nếu cắt đồ thị tại hai điểm → không phải hàm số."
+        },
+        { id: 2, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
+          text: "Ý nghĩa của 'tính duy nhất' trong định nghĩa hàm số là:",
+          options: [
+            "Mỗi giá trị đầu ra \(y\) chỉ ứng với một đầu vào \(x\).",
+            "Mỗi giá trị đầu vào \(x\) xác định nhiều nhất một giá trị đầu ra \(y\).",
+            "Công thức của hàm số là duy nhất.",
+            "Đồ thị hàm số là một đường thẳng."
+          ],
+          correct: 1,
+          explanation: "Tính duy nhất: với mỗi \(x\) thuộc miền xác định, tồn tại đúng một \(y\) tương ứng. Nó không cấm một \(y\) đến từ nhiều \(x\).",
+          tip: "Phân biệt: 'mỗi x có một y' chứ không phải 'mỗi y có một x'."
+        },
+        { id: 3, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
+          text: "Trong đời sống, ví dụ nào minh họa cho một hàm số?",
+          options: [
+            "Một người có thể có nhiều số điện thoại khác nhau.",
+            "Số căn cước công dân gắn với mỗi công dân.",
+            "Một học sinh có nhiều điểm trung bình môn cùng lúc.",
+            "Một chiếc xe có thể đỗ ở nhiều bãi cùng một thời điểm."
+          ],
+          correct: 1,
+          explanation: "Mỗi công dân có duy nhất một số căn cước – đầu vào (người) cho ra duy nhất một đầu ra (số).",
+          tip: "Liên hệ: 'mỗi người – một mã số duy nhất' chính là một hàm số."
+        },
+        { id: 4, type: "lythuyet", level: "Lý thuyết", levelCode: "ly",
+          text: "Điều kiện nào sau đây là cần và đủ để một đường cong trong mặt phẳng \(Oxy\) là đồ thị của hàm số \(y=f(x)\)?",
+          options: [
+            "Đường cong không cắt trục hoành.",
+            "Đường cong đi qua gốc tọa độ.",
+            "Bất kỳ đường thẳng đứng nào cũng cắt đường cong tại nhiều nhất một điểm.",
+            "Đường cong là một đường thẳng."
+          ],
+          correct: 2,
+          explanation: "Đó là 'vertical line test' – nếu một đường thẳng đứng cắt đồ thị tại hai điểm trở lên thì có một \(x\) cho hai \(y\), không là hàm số.",
+          tip: "Mẹo: dùng thước kẻ dọc, nếu chỉ giao một điểm thì là hàm số."
+        },
+
+        // ----- BÀI TẬP DỄ (5 câu) -----
+        { id: 5, type: "baitap", level: "Dễ", levelCode: "de",
+          text: "Cho hàm số \(f(x) = 2x^2 - 3x + 1\). Tính \(f(2)\).",
+          options: ["3", "1", "5", "7"],
+          correct: 0,
+          explanation: "\(f(2)=2\\cdot2^2 -3\\cdot2+1 = 8 -6+1=3\).",
+          tip: "Thay số cẩn thận, tính lũy thừa trước."
+        },
+        { id: 6, type: "baitap", level: "Dễ", levelCode: "de",
+          text: "Tìm miền xác định (tập xác định) của hàm số \(f(x) = \\sqrt{x+3}\).",
+          options: ["\(x > -3\)", "\(x \\ge -3\)", "\(x \\le -3\)", "\(x \\neq -3\)"],
+          correct: 1,
+          explanation: "Biểu thức dưới căn phải không âm: \(x+3 \\ge 0 \\Leftrightarrow x \\ge -3\).",
+          tip: "Điều kiện căn: biểu thức trong căn ≥ 0."
+        },
+        { id: 7, type: "baitap", level: "Dễ", levelCode: "de",
+          text: "Cho hàm số \(y = f(x)\) xác định bởi bảng: x=1→y=2, x=2→y=4, x=3→y=6. Giá trị \(f(2)\) bằng?",
+          options: ["2", "4", "6", "không xác định"],
+          correct: 1,
+          explanation: "Từ bảng, ứng với x=2 ta có y=4. Vậy f(2)=4.",
+          tip: "Đọc bảng: cột x tìm giá trị tương ứng."
+        },
+        { id: 8, type: "baitap", level: "Dễ", levelCode: "de",
+          text: "Trong các quan hệ sau, quan hệ nào là hàm số (y theo x)?",
+          options: [
+            "y = ±√x",
+            "\(y = x^3\)",
+            "\(x = y^2\)",
+            "Đường tròn \(x^2+y^2=9\)"
+          ],
+          correct: 1,
+          explanation: "\(y=x^3\): mỗi x cho duy nhất một y. Các đáp án khác có một x cho hai y (trừ y=±√x là không phải hàm).",
+          tip: "Kiểm tra nhanh: nếu có thể giải được y theo x mà không có dấu ± thì thường là hàm."
+        },
+        { id: 9, type: "baitap", level: "Dễ", levelCode: "de",
+          text: "Tìm \(f(0)\) của hàm số \(f(x) = \\begin{cases} x+1 & \\text{nếu } x>0 \\\\ x^2 & \\text{nếu } x \\le 0 \\end{cases}\)",
+          options: ["1", "0", "2", "không xác định"],
+          correct: 1,
+          explanation: "Vì \(x=0 \\le 0\), dùng nhánh thứ hai: \(f(0)=0^2=0\).",
+          tip: "Đọc điều kiện của hàm ghép, chọn nhánh phù hợp."
+        },
+
+        // ----- BÀI TẬP TRUNG BÌNH (5 câu) -----
+        { id: 10, type: "baitap", level: "Trung bình", levelCode: "tb",
+          text: "Cho hàm số \(f(x) = \\frac{2x-1}{x+3}\). Tìm tập xác định.",
+          options: [
+            "\(\mathbb{R} \\setminus \\{-3\}\)",
+            "\(\mathbb{R} \\setminus \\{3\}\)",
+            "\((-\\infty, -3) \\cup (-3, \\infty)\)",
+            "Cả A và C đều đúng"
+          ],
+          correct: 3,
+          explanation: "Mẫu số \(x+3 \\neq 0 \\Rightarrow x \\neq -3\). Vậy tập xác định \(\\mathbb{R}\\setminus\\{-3\\}\), viết dưới dạng khoảng cũng được.",
+          tip: "Hàm phân thức: mẫu khác không."
+        },
+        { id: 11, type: "baitap", level: "Trung bình", levelCode: "tb",
+          text: "Tìm \(f(a+1)\) biết \(f(x)=x^2-2x\). Rút gọn.",
+          options: ["\(a^2 - 1\)", "\(a^2 + 2a -1\)", "\(a^2 - 2a +1\)", "\(a^2 - 1\)"],
+          correct: 0,
+          explanation: "\(f(a+1)=(a+1)^2 -2(a+1)=a^2+2a+1-2a-2=a^2-1\).",
+          tip: "Thay \(x = a+1\) rồi khai triển, rút gọn."
+        },
+        { id: 12, type: "baitap", level: "Trung bình", levelCode: "tb",
+          text: "Đồ thị nào dưới đây KHÔNG biểu diễn một hàm số \(y=f(x)\)?",
+          options: [
+            "Đường thẳng \(y = 2x + 1\)",
+            "Đường parabol \(y = x^2 - 4\)",
+            "Đường tròn tâm O bán kính 1",
+            "Đường cong \(y = \\sin x\)"
+          ],
+          correct: 2,
+          explanation: "Đường tròn không thỏa vertical line test: một đường thẳng đứng x = 0 cắt đường tròn tại hai điểm.",
+          tip: "Nhớ: đường tròn, elip không phải đồ thị hàm số y theo x."
+        },
+        { id: 13, type: "baitap", level: "Trung bình", levelCode: "tb",
+          text: "Cho hàm số \(f(x) = x^2 - 4x + 3\). Giá trị nào của \(x\) để \(f(x)=0\)?",
+          options: ["\(x=1, x=3\)", "\(x=1, x=-3\)", "\(x=-1, x=3\)", "\(x=2, x=3\)"],
+          correct: 0,
+          explanation: "Giải \(x^2-4x+3=0 \\Rightarrow (x-1)(x-3)=0 \\Rightarrow x=1\) hoặc \(x=3\).",
+          tip: "Phân tích đa thức hoặc dùng Viet: tổng 4, tích 3."
+        },
+        { id: 14, type: "baitap", level: "Trung bình", levelCode: "tb",
+          text: "Hàm số \(f(x) = \\frac{x^2-1}{x-1}\) có thể rút gọn thành \(g(x)=x+1\) với điều kiện nào?",
+          options: [
+            "\(x \\neq 1\)",
+            "\(x \\neq -1\)",
+            "\(x \\in \\mathbb{R}\)",
+            "\(x > 1\)"
+          ],
+          correct: 0,
+          explanation: "Miền xác định ban đầu là \(x \\neq 1\), sau khi rút gọn cần giữ điều kiện đó.",
+          tip: "Rút gọn phân thức phải đảm bảo mẫu khác 0."
+        },
+
+        // ----- BÀI TẬP KHÓ (5 câu) -----
+        { id: 15, type: "baitap", level: "Khó", levelCode: "kho",
+          text: "Cho hai hàm số \(f(x)=x^2+1\) và \(g(x)=\\sqrt{x}\). Tìm \((f \\circ g)(x)\) và tập xác định của nó.",
+          options: [
+            "\(x+1\), TXĐ: \(x \\ge 0\)",
+            "\(x^2+\\sqrt{x}\), TXĐ: \(x \\ge 0\)",
+            "\(x+1\), TXĐ: \(x \\in \\mathbb{R}\)",
+            "\(\\sqrt{x^2+1}\), TXĐ: \(x \\ge 0\)"
+          ],
+          correct: 0,
+          explanation: "\((f \\circ g)(x)=f(g(x)) = (\\sqrt{x})^2 + 1 = x+1\). Điều kiện: \(x \\ge 0\) vì g(x) xác định khi \(x\\ge0\).",
+          tip: "Hợp hàm: lấy hàm trong trước, sau đó áp dụng hàm ngoài, nhớ miền xác định của hàm trong."
+        },
+        { id: 16, type: "baitap", level: "Khó", levelCode: "kho",
+          text: "Đường cong \(y^2 = x^3\) có phải là đồ thị của hàm số \(y=f(x)\) không? Tại sao?",
+          options: [
+            "Có, vì mỗi x cho một y dương.",
+            "Không, vì với x>0 có hai y = ±x^{3/2}.",
+            "Có, vì nó đi qua gốc tọa độ.",
+            "Không, vì nó không liên tục."
+          ],
+          correct: 1,
+          explanation: "Với \(x>0\), phương trình cho \(y = \\pm x^{3/2}\), hai giá trị, vi phạm tính duy nhất → không là hàm số.",
+          tip: "Dạng \(y^2 = ...\) thường không phải hàm số (trừ trường hợp giới hạn miền)."
+        },
+        { id: 17, type: "baitap", level: "Khó", levelCode: "kho",
+          text: "Tìm \(f(\\frac{\\pi}{2})\) biết \(f(x) = \\sin^2 x + \\cos^2 x + \\tan x \\cdot \\cot x\). (Giả sử xác định)",
+          options: ["0", "1", "2", "không xác định"],
+          correct: 2,
+          explanation: "\(\sin^2 x + \\cos^2 x = 1\), \(\\tan x \\cdot \\cot x = 1\) với x thích hợp. Vậy \(f(x)=1+1=2\) hằng số. Tại \(\\pi/2\) vẫn xác định nếu hiểu giới hạn? Thực tế tan(π/2) không xác định, nhưng đề giả sử xác định? Tuy nhiên theo đồng nhất lượng giác thì đúng bằng 2 trong miền xác định. Nhưng cẩn thận: cot(π/2)=0, tan(π/2) không xác định. Do đó đáp án chính xác: không xác định. Sửa lại: Vì tan và cot không đồng thời xác định tại π/2, nên hàm không xác định. Đáp án đúng là D. Phải phù hợp kiến thức.",
+          correct: 3,
+          explanation: "\(\sin^2(\\pi/2)+\\cos^2(\\pi/2)=1\), nhưng \(\\tan(\\pi/2)\) không xác định, do đó \(f(\\pi/2)\) không tồn tại.",
+          tip: "Luôn kiểm tra miền xác định trước khi tính giá trị, tránh lỗi vô định."
+        },
+        { id: 18, type: "baitap", level: "Khó", levelCode: "kho",
+          text: "Hàm số \(f(x) = \\frac{|x-2|}{x-2}\) có tập xác định và giá trị như thế nào?",
+          options: [
+            "\(\\mathbb{R}\), \(f(x)=1\) với mọi x",
+            "\(\mathbb{R} \\setminus \\{2\\}\), \(f(x)=1\) nếu x>2 và \(f(x)=-1\) nếu x<2",
+            "\(\mathbb{R} \\setminus \\{2\\}\), \(f(x)=1\) với mọi x",
+            "\(\mathbb{R}\), \(f(x)=\\pm 1\)"
+          ],
+          correct: 1,
+          explanation: "Mẫu số x-2 ≠0 nên x≠2. Với x>2: |x-2|=x-2 => f=1. Với x<2: |x-2| = -(x-2) => f=-1.",
+          tip: "Hàm dấu: \(\\frac{|a|}{a} = \\text{sgn}(a)\) với a≠0."
+        },
+        { id: 19, type: "baitap", level: "Khó", levelCode: "kho",
+          text: "Cho hàm số \(f(x) = \\frac{2x}{x^2-4}\). Mệnh đề nào sau đây đúng?",
+          options: [
+            "TXĐ: \(x \\neq 2\)",
+            "TXĐ: \(x \\neq -2\)",
+            "TXĐ: \(x \\neq \\pm 2\)",
+            "TXĐ: \(\\mathbb{R}\)"
+          ],
+          correct: 2,
+          explanation: "Mẫu số \(x^2-4=0 \\Leftrightarrow x = \\pm 2\). Vậy TXĐ là \(\\mathbb{R}\\setminus\\{-2,2\\}\).",
+          tip: "Phân thức: mẫu khác không, nhớ cả hai nghiệm."
+        }
+    ];
+
+    // Sửa câu 17 lại cho chính xác (không xác định)
+    // Đã sửa correct: 3 và explanation phù hợp.
+    // Đảm bảo đủ 20 câu
+    console.assert(questions.length === 20, "Phải có 20 câu hỏi");
+
+    // State lưu lựa chọn
+    let selectedAnswers = new Array(20).fill(-1);
+
+    // Render toàn bộ câu hỏi
+    async function renderQuestions() {
+        const container = document.getElementById('questionsList');
+        container.innerHTML = '';
+        for (let idx = 0; idx < questions.length; idx++) {
+            const q = questions[idx];
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-qid', idx);
+
+            const levelClass = `level-${q.levelCode}`;
+            const levelLabel = q.type === 'lythuyet' ? `📘 ${q.level}` : `📝 ${q.level}`;
+            // Tạo các option
+            let optionsHtml = '';
+            q.options.forEach((opt, optIdx) => {
+                const letter = String.fromCharCode(65 + optIdx);
+                optionsHtml += `
+                    <div class="opt" data-optidx="${optIdx}" data-qidx="${idx}">
+                        <input type="radio" name="q${idx}" id="q${idx}_opt${optIdx}" value="${optIdx}" ${selectedAnswers[idx] === optIdx ? 'checked' : ''}>
+                        <label for="q${idx}_opt${optIdx}" class="math">${letter}. ${opt}</label>
+                    </div>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <span class="q-num">Câu ${idx+1}</span>
+                    <span class="q-level ${levelClass}">${levelLabel}</span>
+                </div>
+                <div class="question-text math">${q.text}</div>
+                <div class="options" id="options-${idx}">
+                    ${optionsHtml}
+                </div>
+                <div class="feedback" id="fb-${idx}">
+                    <strong>✅ Đáp án đúng: ${String.fromCharCode(65+q.correct)}</strong><br>
+                    <strong>📖 Giải thích:</strong> <span class="math">${q.explanation}</span><br>
+                    <div class="tip">💡 <strong>Mẹo nhanh:</strong> ${q.tip}</div>
+                </div>
+            `;
+            container.appendChild(card);
+            // Gắn sự kiện change cho radio
+            const radios = card.querySelectorAll(`input[type="radio"]`);
+            radios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const qid = parseInt(radio.name.slice(1));
+                    const selectedVal = parseInt(radio.value);
+                    handleAnswer(qid, selectedVal);
+                });
+            });
+            // Nếu đã chọn trước đó, hiển thị màu & feedback
+            if (selectedAnswers[idx] !== -1) {
+                applyStyleAndFeedback(idx, selectedAnswers[idx]);
+            }
+        }
+        // Gọi MathJax để render công thức mới
+        if (window.MathJax) {
+            await MathJax.typesetPromise();
+        }
+        updateProgress();
+    }
+
+    function handleAnswer(qid, selectedIdx) {
+        const q = questions[qid];
+        selectedAnswers[qid] = selectedIdx;
+        applyStyleAndFeedback(qid, selectedIdx);
+        updateProgress();
+    }
+
+    function applyStyleAndFeedback(qid, selectedIdx) {
+        const q = questions[qid];
+        const card = document.querySelector(`.question-card[data-qid='${qid}']`);
+        if (!card) return;
+        // reset styles
+        const allOpts = card.querySelectorAll('.opt');
+        allOpts.forEach(opt => opt.classList.remove('opt-correct', 'opt-wrong'));
+
+        const chosenDiv = card.querySelector(`.opt[data-optidx='${selectedIdx}']`);
+        if (chosenDiv) {
+            if (selectedIdx === q.correct) {
+                chosenDiv.classList.add('opt-correct');
+            } else {
+                chosenDiv.classList.add('opt-wrong');
+                // highlight đáp án đúng
+                const correctDiv = card.querySelector(`.opt[data-optidx='${q.correct}']`);
+                if (correctDiv) correctDiv.classList.add('opt-correct');
+            }
+        } else {
+            // fallback: tô đáp án đúng
+            const correctDiv = card.querySelector(`.opt[data-optidx='${q.correct}']`);
+            if (correctDiv) correctDiv.classList.add('opt-correct');
+        }
+        // hiển thị feedback
+        const fbDiv = card.querySelector('.feedback');
+        if (fbDiv) fbDiv.classList.add('show');
+    }
+
+    function updateProgress() {
+        const answered = selectedAnswers.filter(idx => idx !== -1).length;
+        document.getElementById('progressStats').innerHTML = `📊 ${answered}/20 đã trả lời`;
+    }
+
+    // Tải file HTML (download)
+    function downloadPage() {
+        let htmlContent = document.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'trac_nghiem_ham_so_duymt.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('downloadBtn').addEventListener('click', downloadPage);
+    renderQuestions();
+</script>
+</body>
+</html>
